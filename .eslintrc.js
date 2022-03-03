@@ -1,5 +1,10 @@
 module.exports = {
   root: true,
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    ecmaFeatures: { jsx: true },
+  },
   extends: [
     'eslint:recommended',
     '@react-native-community',
