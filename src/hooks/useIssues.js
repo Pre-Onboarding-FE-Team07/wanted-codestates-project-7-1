@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-function useSearch() {
+function useIssues() {
   const getIssues = async (owner, repo) => {
     try {
       const res = await axios.get(
@@ -46,4 +46,4 @@ function useSearch() {
   return [getIssues, getTime];
 }
 
-export default useSearch;
+export default useIssues;
