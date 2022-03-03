@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   parserOptions: {
-    ecmaVersion: 'latest',
+    ecmaVersion: 12,
     sourceType: 'module',
     ecmaFeatures: { jsx: true },
   },
@@ -17,10 +17,5 @@ module.exports = {
     'prettier/prettier': 'error',
     'no-unused-vars': 'warn',
     'react/jsx-filename-extension': ['error', { extensions: ['.jsx'] }],
-  },
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    ecmaFeatures: { jsx: true },
   },
 };
