@@ -1,13 +1,22 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { NativeBaseProvider } from 'native-base';
+import IssueScreen from './screens/Issue';
+import MyRepoScreen from './screens/MyRepo';
+import SearchScreen from './screens/Search';
+
+const Tabs = createBottomTabNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Hello, World!</Text>
-    </View>
+    <NavigationContainer>
+      <NativeBaseProvider>
+        <Tabs.Navigator>
+          <Tabs.Screen name="Search" component={SearchScreen} />
+          <Tabs.Screen name="Issue" component={IssueScreen} />
+          <Tabs.Screen name="MyRepo" component={MyRepoScreen} />
+        </Tabs.Navigator>
+      </NativeBaseProvider>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-});
