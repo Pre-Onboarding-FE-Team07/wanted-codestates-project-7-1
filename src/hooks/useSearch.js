@@ -1,11 +1,7 @@
 import axios from 'axios';
 
 function useSearch() {
-  const getSearchResult = async (keyword, pageNum) => {
-    console.log(keyword, pageNum);
-    if (!pageNum) {
-      pageNum = 1;
-    }
+  const getSearchResult = async (keyword, pageNum = 1) => {
     try {
       const res = await axios.get(
         'https://api.github.com/search/repositories',
