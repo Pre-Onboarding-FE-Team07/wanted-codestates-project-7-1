@@ -1,4 +1,4 @@
-import { FlatList, VStack } from 'native-base';
+import { FlatList } from 'native-base';
 import PropTypes from 'prop-types';
 import { cloneElement } from 'react';
 import Pagination from './Pagination';
@@ -11,18 +11,19 @@ export default function PaginationList({
   renderItem,
 }) {
   return (
-    <VStack>
-      <Pagination
-        numberOfPages={numberOfPages}
-        currentPage={currentPage}
-        onChange={onChange}
-      />
-      <FlatList
-        data={data}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => cloneElement(renderItem(item))}
-      />
-    </VStack>
+    <FlatList
+      data={data}
+      ListHeaderComponent={
+        <Pagination
+          numberOfPages={numberOfPages}
+          currentPage={currentPage}
+          onChange={onChange}
+        />
+      }
+      stickyHeaderIndices={[0]}
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={({ item }) => cloneElement(renderItem(item))}
+    />
   );
 }
 

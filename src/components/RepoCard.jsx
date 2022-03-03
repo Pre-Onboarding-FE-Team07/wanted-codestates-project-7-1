@@ -7,10 +7,15 @@ export default function RepoCard({ name, desc, subscribe }) {
   return (
     <Box borderRadius="md" bg="white" shadow={3} my="1.5" mx="1">
       <TouchableOpacity onPress={subscribe}>
-        <Box mt="2" mb="3" mx="2">
+        <Box mt="2" mb="3" mx="2" overflow="hidden">
           <HStack alignItems="center" space={0.3}>
             <Icon as={Octicons} name="repo" size="4" mt="1" />
-            <Text color="dark.200" fontWeight="bold" fontSize="lg">
+            <Text
+              color="dark.200"
+              fontWeight="bold"
+              fontSize="lg"
+              numberOfLines={1}
+            >
               {name}
             </Text>
           </HStack>

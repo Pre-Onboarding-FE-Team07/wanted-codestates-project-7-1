@@ -7,7 +7,8 @@ function ChevronButton({ type, disabled, onPress }) {
   return (
     <Button
       bg="transparent"
-      px={type === 'left' ? '2' : '0'}
+      pr={type === 'left' ? '1' : '0.5'}
+      pl={type === 'left' ? '3' : '4'}
       disabled={disabled}
       onPress={onPress}
       _pressed={{ bg: 'transparent', opacity: 0.5 }}
@@ -35,7 +36,13 @@ export default function Pagination({
   const pages = useRef([...Array(numberOfPages + 1).keys()].slice(1));
 
   return (
-    <HStack alignItems="center" justifyContent="space-between" mx="2">
+    <HStack
+      alignItems="center"
+      justifyContent="space-between"
+      bg="muted.200"
+      borderRadius="lg"
+      borderTopRadius="none"
+    >
       <ChevronButton
         type="left"
         disabled={currentPage <= 1}
