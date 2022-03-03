@@ -1,10 +1,13 @@
-import { View } from 'native-base';
-import { Text } from 'react-native';
+import { VStack } from 'native-base';
+import { Keyboard, TouchableWithoutFeedback } from 'react-native';
+import SearchBar from '../components/SearchBar';
 
 export default function SearchScreen() {
   return (
-    <View>
-      <Text>SearchScreen</Text>
-    </View>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <VStack flex={1}>
+        <SearchBar onSearch={(value) => console.log(value)} />
+      </VStack>
+    </TouchableWithoutFeedback>
   );
 }
