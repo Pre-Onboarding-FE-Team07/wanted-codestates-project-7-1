@@ -8,7 +8,7 @@ export default function SearchBar({ onSearch }) {
   const inputRef = useRef();
 
   const search = () => {
-    inputValue && onSearch(inputValue);
+    onSearch(inputValue);
     inputRef.current.blur();
   };
 

@@ -13,18 +13,29 @@ export default function SearchScreen() {
   const [shrink, setShrink] = useState(false);
   const [list, setList] = useState([]);
   const getSearchResult = useSearch();
+  const [result, setResult] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSearch = (keyword) => {
-    getSearchResult(keyword).then(setList);
-    setPage(1);
+  const handleSearch = async (keyword) => {
+    if (!keyword) {
+      setList([]);
+      setResult('');
+      return;
+    }
+    try {
+      setLoading(true);
+      setList(await getSearchResult(keyword));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+      setResult(keyword);
+      setPage(1);
+    }
   };
 
   useEffect(() => {
-    if (list.length) {
-      setShrink(true);
-    } else {
-      setShrink(false);
-    }
+    setShrink(!!list.length);
   }, [list]);
 
   return (
@@ -32,7 +43,11 @@ export default function SearchScreen() {
       <MainLayout>
         <Header isShrink={shrink}>Search Repository</Header>
         <SearchBar onSearch={handleSearch} />
-        {list.length ? (
+        {loading ? (
+          <Center flex={1}>
+            <Heading color="gray.400">Loading...</Heading>
+          </Center>
+        ) : list.length ? (
           <PaginationList
             data={list}
             currentPage={page}
@@ -44,7 +59,9 @@ export default function SearchScreen() {
           />
         ) : (
           <Center flex={1}>
-            <Heading color="gray.300">No Repository!</Heading>
+            <Heading color="gray.400">
+              {result ? 'No Repository!' : 'Find Your Favorite Repository!'}
+            </Heading>
           </Center>
         )}
       </MainLayout>
