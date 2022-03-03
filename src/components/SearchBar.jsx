@@ -26,7 +26,7 @@ export default function SearchBar({ onSearch }) {
           flex={1}
           variant="underlined"
           borderColor="dark.500"
-          onEndEditing={search}
+          onSubmitEditing={search}
           fontSize="sm"
           placeholder="즐겨 찾는 저장소를 검색하고 등록하세요! (최대 4개)"
         />

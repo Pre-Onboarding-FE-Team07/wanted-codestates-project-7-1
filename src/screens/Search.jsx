@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { Center, Heading } from 'native-base';
+import { useEffect, useState } from 'react';
 import { Keyboard, TouchableWithoutFeedback } from 'react-native';
 import Header from '../components/Header';
 import PaginationList from '../components/PaginationList';
@@ -15,25 +16,37 @@ export default function SearchScreen() {
 
   const handleSearch = (keyword) => {
     getSearchResult(keyword).then(setList);
-    setShrink(true);
+    setPage(1);
   };
 
-  console.log(page);
+  useEffect(() => {
+    if (list.length) {
+      setShrink(true);
+    } else {
+      setShrink(false);
+    }
+  }, [list]);
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <MainLayout>
         <Header isShrink={shrink}>Search Repository</Header>
         <SearchBar onSearch={handleSearch} />
-        <PaginationList
-          data={list}
-          currentPage={page}
-          numberOfPages={5}
-          onChange={setPage}
-          renderItem={({ full_name, description }) => (
-            <RepoCard name={full_name} desc={description} />
-          )}
-        />
+        {list.length ? (
+          <PaginationList
+            data={list}
+            currentPage={page}
+            numberOfPages={5}
+            onChange={setPage}
+            renderItem={({ full_name, description }) => (
+              <RepoCard name={full_name} desc={description} />
+            )}
+          />
+        ) : (
+          <Center flex={1}>
+            <Heading color="gray.300">No Repository!</Heading>
+          </Center>
+        )}
       </MainLayout>
     </TouchableWithoutFeedback>
   );

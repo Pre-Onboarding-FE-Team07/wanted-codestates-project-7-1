@@ -1,7 +1,31 @@
-import { Button, Center, HStack } from 'native-base';
+import { Box, Button, HStack, Icon } from 'native-base';
 import PropTypes from 'prop-types';
 import { useRef } from 'react';
 import Octicons from 'react-native-vector-icons/Octicons';
+
+function ChevronButton({ type, disabled, onPress }) {
+  return (
+    <Button
+      bg="transparent"
+      px={type === 'left' ? '2' : '0'}
+      disabled={disabled}
+      onPress={onPress}
+      _pressed={{ bg: 'transparent', opacity: 0.5 }}
+    >
+      <Icon
+        size="5"
+        as={<Octicons name={`chevron-${type}`} />}
+        color={disabled ? 'gray.400' : 'dark.200'}
+      />
+    </Button>
+  );
+}
+
+ChevronButton.propTypes = {
+  disabled: PropTypes.bool,
+  onPress: PropTypes.func,
+  type: PropTypes.oneOf(['left', 'right']),
+};
 
 export default function Pagination({
   numberOfPages,
@@ -11,23 +35,36 @@ export default function Pagination({
   const pages = useRef([...Array(numberOfPages + 1).keys()].slice(1));
 
   return (
-    <Center>
-      <HStack>
-        {pages.current.map((pageNo) => (
-          <Button
-            key={pageNo}
-            bg="transparent"
-            _pressed={{ backgroundColor: 'transparent' }}
-            onPress={() => onChange(pageNo)}
-          >
-            <Octicons
-              size={15}
-              name={currentPage === pageNo ? 'square-fill' : 'square'}
-            />
-          </Button>
-        ))}
-      </HStack>
-    </Center>
+    <HStack alignItems="center" justifyContent="space-between" mx="2">
+      <ChevronButton
+        type="left"
+        disabled={currentPage <= 1}
+        onPress={() => onChange(currentPage - 1)}
+      />
+      <Box>
+        <HStack>
+          {pages.current.map((pageNo) => (
+            <Button
+              key={pageNo}
+              bg="transparent"
+              _pressed={{ backgroundColor: 'transparent' }}
+              onPress={() => onChange(pageNo)}
+            >
+              <Octicons
+                size={15}
+                name={currentPage === pageNo ? 'square-fill' : 'square'}
+              />
+            </Button>
+          ))}
+        </HStack>
+      </Box>
+
+      <ChevronButton
+        type="right"
+        disabled={currentPage >= numberOfPages}
+        onPress={() => onChange(currentPage + 1)}
+      />
+    </HStack>
   );
 }
 

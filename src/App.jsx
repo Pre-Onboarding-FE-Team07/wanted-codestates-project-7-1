@@ -13,6 +13,7 @@ export default function App() {
     <NavigationContainer>
       <NativeBaseProvider>
         <Tabs.Navigator
+          // initialRouteName="Issue"
           screenOptions={{
             headerShown: false,
             tabBarShowLabel: false,
