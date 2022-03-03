@@ -13,4 +13,9 @@ module.exports = {
     'no-unused-vars': 'warn',
     'react/jsx-filename-extension': ['error', { extensions: ['.jsx'] }],
   },
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    ecmaFeatures: { jsx: true },
+  },
 };
