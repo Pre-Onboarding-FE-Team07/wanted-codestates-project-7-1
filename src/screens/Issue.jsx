@@ -1,10 +1,12 @@
-import { View } from 'native-base';
+import { VStack } from 'native-base';
 import { Text } from 'react-native';
+import Header from '../components/Header';
 
 export default function IssueScreen() {
   return (
-    <View>
-      <Text>IssueScreen</Text>
-    </View>
+    <VStack flex={1}>
+      <Header>Explore Issues</Header>
+      <Text>Issue</Text>
+    </VStack>
   );
 }
