@@ -11,6 +11,7 @@ const getStoredValue = async (key) => {
 };
 export default function useAsyncStorage(key, initialValue) {
   const [storedValue, setStoredValue] = useState(initialValue);
+
   useEffect(() => {
     setStoredValue(getStoredValue(key));
   }, [key]);
@@ -18,7 +19,12 @@ export default function useAsyncStorage(key, initialValue) {
   const setValue = useCallback(
     async (value) => {
       try {
-        await AsyncStorage.setItem(key, JSON.stringify(value));
+        if (value) {
+          if (Array.isArray(value) && value.length === 0) {
+            AsyncStorage.removeItem(key);
+          }
+          await AsyncStorage.setItem(key, JSON.stringify(value));
+        }
         setStoredValue(value);
       } catch (e) {
         console.log(e);
