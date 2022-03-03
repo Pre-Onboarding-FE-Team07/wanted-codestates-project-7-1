@@ -4,8 +4,12 @@ module.exports = {
     'eslint:recommended',
     '@react-native-community',
     'plugin:react/recommended',
+    'plugin:react/jsx-runtime',
+    'plugin:react-hooks/recommended',
   ],
+  plugins: ['react', 'react-hooks', 'prettier'],
   rules: {
-    'react/react-in-jsx-scope': 'off',
+    'prettier/prettier': 'error',
+    'react/jsx-filename-extension': ['error', {extensions: ['.jsx']}],
   },
 };
