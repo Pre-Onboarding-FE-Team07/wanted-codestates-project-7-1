@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 export default function Header({ children }) {
   return (
     <Box
-      m="3"
       shadow="2"
       height="40"
       justifyContent="center"
@@ -18,5 +17,5 @@ export default function Header({ children }) {
 }
 
 Header.propTypes = {
-  children: PropTypes.node,
+  children: PropTypes.node.isRequired,
 };
