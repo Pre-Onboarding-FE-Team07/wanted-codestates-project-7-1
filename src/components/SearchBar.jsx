@@ -1,11 +1,12 @@
-import { Button, FormControl, HStack, Input } from 'native-base';
+import { Button, FormControl, HStack, Icon, Input } from 'native-base';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function SearchBar({ onSearch }) {
   const [inputValue, setInputValue] = useState('');
 
-  const search = () => onSearch(inputValue);
+  const search = () => inputValue && onSearch(inputValue);
 
   return (
     <FormControl isRequired my="1">
@@ -21,9 +22,19 @@ export default function SearchBar({ onSearch }) {
           fontSize="sm"
           placeholder="즐겨 찾는 저장소를 검색하고 등록하세요! (최대 4개)"
         />
-        <Button borderRadius="2xl" bg="dark.100" onPress={search}>
-          검색
-        </Button>
+        <Button
+          leftIcon={
+            <Icon
+              as={Ionicons}
+              name="search-outline"
+              color="gray.100"
+              size="6"
+            />
+          }
+          borderRadius="lg"
+          bg="dark.100"
+          onPress={search}
+        />
       </HStack>
     </FormControl>
   );
