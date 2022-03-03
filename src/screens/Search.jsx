@@ -4,15 +4,17 @@ import Header from '../components/Header';
 import PaginationList from '../components/PaginationList';
 import RepoCard from '../components/RepoCrad';
 import SearchBar from '../components/SearchBar';
-import fakeData from '../fakeData/repo.json';
+import useSearch from '../hooks/useSearch';
 import MainLayout from '../layouts/MainLayout';
 
 export default function SearchScreen() {
   const [page, setPage] = useState(1);
   const [shrink, setShrink] = useState(false);
+  const [list, setList] = useState([]);
+  const getSearchResult = useSearch();
 
-  const onSearch = (value) => {
-    console.log(value);
+  const handleSearch = (keyword) => {
+    getSearchResult(keyword).then(setList);
     setShrink(true);
   };
 
@@ -22,9 +24,9 @@ export default function SearchScreen() {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <MainLayout>
         <Header isShrink={shrink}>Search Repository</Header>
-        <SearchBar onSearch={onSearch} />
+        <SearchBar onSearch={handleSearch} />
         <PaginationList
-          data={fakeData}
+          data={list}
           currentPage={page}
           numberOfPages={5}
           onChange={setPage}
