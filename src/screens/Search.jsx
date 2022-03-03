@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Keyboard, TouchableWithoutFeedback } from 'react-native';
 import Header from '../components/Header';
 import PaginationList from '../components/PaginationList';
-import RepoCard from '../components/RepoCrad';
+import RepoCard from '../components/RepoCard';
 import SearchBar from '../components/SearchBar';
 import useSearch from '../hooks/useSearch';
 import MainLayout from '../layouts/MainLayout';

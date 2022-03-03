@@ -1,12 +1,16 @@
 import { Button, FormControl, HStack, Icon, Input } from 'native-base';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function SearchBar({ onSearch }) {
   const [inputValue, setInputValue] = useState('');
+  const inputRef = useRef();
 
-  const search = () => inputValue && onSearch(inputValue);
+  const search = () => {
+    inputValue && onSearch(inputValue);
+    inputRef.current.blur();
+  };
 
   return (
     <FormControl isRequired my="1">
@@ -14,7 +18,11 @@ export default function SearchBar({ onSearch }) {
         <Input
           type="text"
           value={inputValue}
+          ref={inputRef}
           onChangeText={setInputValue}
+          autoCapitalize="none"
+          autoComplete="off"
+          autoCorrect={false}
           flex={1}
           variant="underlined"
           borderColor="dark.500"
