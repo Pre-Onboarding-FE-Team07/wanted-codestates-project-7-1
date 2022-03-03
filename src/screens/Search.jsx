@@ -2,6 +2,7 @@ import { Center, Heading } from 'native-base';
 import { useEffect, useState } from 'react';
 import { Keyboard, TouchableWithoutFeedback } from 'react-native';
 import Header from '../components/Header';
+import LoadingSkeleton from '../components/LoadingSkeleton';
 import PaginationList from '../components/PaginationList';
 import RepoCard from '../components/RepoCard';
 import SearchBar from '../components/SearchBar';
@@ -44,9 +45,10 @@ export default function SearchScreen() {
         <Header isShrink={shrink}>Search Repository</Header>
         <SearchBar onSearch={handleSearch} />
         {loading ? (
-          <Center flex={1}>
-            <Heading color="gray.400">Loading...</Heading>
-          </Center>
+          // <Center flex={1}>
+          //   <Heading color="gray.400">Loading...</Heading>
+          // </Center>
+          <LoadingSkeleton />
         ) : list.length ? (
           <PaginationList
             data={list}
