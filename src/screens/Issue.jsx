@@ -12,28 +12,27 @@ export default function IssueScreen() {
 
   return (
     <ScrollView>
-      {issueList &&
-        issueList.map((issue) => (
-          <Link key={issue.id} href={issue.html_url}>
-            <VStack
-              bg="white"
-              flex={1}
-              my="1.5"
-              h="16"
-              display="flex"
-              justifyContent="center"
-              rounded="md"
-              shadow="3"
-              px="3"
-            >
-              <Text numberOfLines={1}>{issue.title}</Text>
-              <Text numberOfLines={1} color="primary.700">
-                {issue.user.login}
-              </Text>
-              <Text>{getTime(issue.created_at)}</Text>
-            </VStack>
-          </Link>
-        ))}
+      {issueList?.map((issue) => (
+        <Link key={issue.id} href={issue.html_url}>
+          <VStack
+            bg="white"
+            flex={1}
+            my="1.5"
+            h="16"
+            display="flex"
+            justifyContent="center"
+            rounded="md"
+            shadow="3"
+            px="3"
+          >
+            <Text numberOfLines={1}>{issue.title}</Text>
+            <Text numberOfLines={1} color="primary.700">
+              {issue.user.login}
+            </Text>
+            <Text>{getTime(issue.created_at)}</Text>
+          </VStack>
+        </Link>
+      ))}
     </ScrollView>
   );
 }
