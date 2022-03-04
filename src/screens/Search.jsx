@@ -1,49 +1,73 @@
-import { Text, VStack, ScrollView, Button, HStack, Box } from 'native-base';
-import { useState } from 'react';
+import { Center, Heading } from 'native-base';
+import { useEffect, useState } from 'react';
 import { Keyboard, TouchableWithoutFeedback } from 'react-native';
+import Header from '../components/Header';
+import LoadingSkeleton from '../components/LoadingSkeleton';
+import PaginationList from '../components/PaginationList';
+import RepoCard from '../components/RepoCard';
 import SearchBar from '../components/SearchBar';
 import useSearch from '../hooks/useSearch';
+import MainLayout from '../layouts/MainLayout';
 
 export default function SearchScreen() {
+  const [page, setPage] = useState(1);
+  const [shrink, setShrink] = useState(false);
   const [list, setList] = useState([]);
   const getSearchResult = useSearch();
-  const handleSearch = (keyword) => {
-    getSearchResult(keyword).then(setList);
+  const [result, setResult] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleSearch = async (keyword) => {
+    if (!keyword) {
+      setList([]);
+      setResult('');
+      return;
+    }
+    try {
+      setLoading(true);
+      setList(await getSearchResult(keyword));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+      setResult(keyword);
+      setPage(1);
+    }
   };
 
+  useEffect(() => {
+    setShrink(!!list.length);
+  }, [list]);
+
   return (
-    <>
-      <TouchableWithoutFeedback flex={0.2} onPress={() => Keyboard.dismiss()}>
-        <VStack>
-          <SearchBar onSearch={handleSearch} />
-        </VStack>
-      </TouchableWithoutFeedback>
-      <ScrollView flex={1}>
-        {list.map((item) => (
-          <HStack
-            alignItems="center"
-            key={item.id}
-            h="16"
-            bg="white"
-            rounded="md"
-            shadow="3"
-            my="1.5"
-            px="3"
-          >
-            <Box flex={1}>
-              <Text color="primary.700" numberOfLines={1}>
-                {item.full_name}
-              </Text>
-              <Text color="muted.700" numberOfLines={1}>
-                {item.description}
-              </Text>
-            </Box>
-            <Button variant="outline" size="sm" ml="8">
-              ADD
-            </Button>
-          </HStack>
-        ))}
-      </ScrollView>
-    </>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <MainLayout>
+        <Header isShrink={shrink}>Search Repository</Header>
+        <SearchBar onSearch={handleSearch} />
+        {loading ? (
+          <LoadingSkeleton />
+        ) : list.length ? (
+          <PaginationList
+            data={list}
+            currentPage={page}
+            numberOfPages={5}
+            onChange={setPage}
+            renderItem={({ full_name, description, open_issues_count }) => (
+              <RepoCard
+                name={full_name}
+                desc={description}
+                numberOfIssues={open_issues_count}
+              />
+            )}
+          />
+        ) : (
+          <Center flex={1}>
+            <Heading color="gray.400">
+              {result ? 'No Repository!' : 'Find Your Favorite Repository!'}
+            </Heading>
+          </Center>
+        )}
+      </MainLayout>
+    </TouchableWithoutFeedback>
   );
 }
