@@ -30,11 +30,7 @@ const SearchResult = ({ keyword }) => {
   if (searchResult.length === 0) {
     return (
       <Center flex={1}>
-        <Heading color="gray.400">
-          {keyword
-            ? 'No Matching Repository!'
-            : 'Find Your Favorite Repository!'}
-        </Heading>
+        <Heading color="gray.400">No Matching Repository!</Heading>
       </Center>
     );
   }
