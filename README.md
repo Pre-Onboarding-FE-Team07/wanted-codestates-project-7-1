@@ -42,7 +42,7 @@ Github 저장소를 등록하고, 등록한 저장소의 이슈를 모아 보여
 | ------------------------------------------ | ---- | ------------------------------------------------ |
 | [⚡️박진용](https://github.com/jinyongp)   | 팀장 | 개발 환경 구축 및 전체 UI 구현                                |
 | [✨김정훈](https://github.com/jeonghun10)  | 팀원 | 페이지 네이션 구현 |
-| [🎨문선경](https://github.com/dev-seomoon) | 팀장 | 검색 및 출력 기능 구현 및 SWR 적용            |
+| [🎨문선경](https://github.com/dev-seomoon) | 팀원 | 검색 및 출력 기능 구현 및 SWR 적용            |
 | [🚀심채윤](https://github.com/Lela12)      | 팀원 | 등록된 저장소 삭제 기능 구현               |
 | [✏️예효은](https://github.com/ye-yo)       | 팀원 | 저장소 등록 기능 구현                |
 | [🔨이예지](https://github.com/Lee-ye-ji)   | 팀원 | 저장소 issue 출력 및 github 상세 페이지 이동 기능 구현 |
