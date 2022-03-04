@@ -1,23 +1,13 @@
-import axios from 'axios';
+import useSWR from 'swr';
+import api from '../api';
 
-function useIssues() {
-  const getIssues = async (owner, repo) => {
-    try {
-      const res = await axios.get(
-        `https://api.github.com/repos/${owner}/${repo}/issues`,
-        {
-          headers: { Accept: 'application/vnd.github.v3+json' },
-          params: {
-            per_page: 10,
-          },
-        },
-      );
-      console.log(res.data);
-      return res.data;
-    } catch (e) {
-      console.log(e);
-    }
-  };
+function useIssues(owner, repo, pageIndex) {
+  const fetcher = (url) => api.get(url).then((res) => res.data);
+
+  const { data, error } = useSWR(
+    `/repos/${owner}/${repo}/issues?page=${pageIndex}`,
+    fetcher,
+  );
 
   const getTime = (createdAt) => {
     const now = new Date();
@@ -43,7 +33,7 @@ function useIssues() {
     return `${Math.floor(timeDays / 365)}년 전`;
   };
 
-  return [getIssues, getTime];
+  return { data, error, getTime };
 }
 
 export default useIssues;
