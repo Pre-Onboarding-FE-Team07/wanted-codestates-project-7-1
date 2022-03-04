@@ -1,72 +1,30 @@
-import { Center, Heading } from 'native-base';
 import { useEffect, useState } from 'react';
 import { Keyboard, TouchableWithoutFeedback } from 'react-native';
 import Header from '../components/Header';
-import LoadingSkeleton from '../components/LoadingSkeleton';
-import PaginationList from '../components/PaginationList';
-import RepoCard from '../components/RepoCard';
 import SearchBar from '../components/SearchBar';
-import useSearch from '../hooks/useSearch';
+import SearchResult from '../components/SearchResult';
 import MainLayout from '../layouts/MainLayout';
 
 export default function SearchScreen() {
-  const [page, setPage] = useState(1);
+  const [showResult, setShowResult] = useState(false);
   const [shrink, setShrink] = useState(false);
-  const [list, setList] = useState([]);
-  const getSearchResult = useSearch();
-  const [result, setResult] = useState('');
-  const [loading, setLoading] = useState(false);
+  const [keyword, setKeyword] = useState('');
 
-  const handleSearch = async (keyword) => {
-    if (!keyword) {
-      setList([]);
-      setResult('');
-      return;
-    }
-    try {
-      setLoading(true);
-      setList(await getSearchResult(keyword));
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-      setResult(keyword);
-      setPage(1);
-    }
+  const handleSearch = async (value) => {
+    setKeyword(value);
+    setShowResult(true);
   };
 
   useEffect(() => {
-    setShrink(!!list.length);
-  }, [list]);
+    setShrink(showResult);
+  }, [showResult]);
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <MainLayout>
         <Header isShrink={shrink}>Search Repository</Header>
         <SearchBar onSearch={handleSearch} />
-        {loading ? (
-          <LoadingSkeleton />
-        ) : list.length ? (
-          <PaginationList
-            data={list}
-            currentPage={page}
-            numberOfPages={5}
-            onChange={setPage}
-            renderItem={({ full_name, description, open_issues_count }) => (
-              <RepoCard
-                name={full_name}
-                desc={description}
-                numberOfIssues={open_issues_count}
-              />
-            )}
-          />
-        ) : (
-          <Center flex={1}>
-            <Heading color="gray.400">
-              {result ? 'No Repository!' : 'Find Your Favorite Repository!'}
-            </Heading>
-          </Center>
-        )}
+        {showResult && <SearchResult keyword={keyword} />}
       </MainLayout>
     </TouchableWithoutFeedback>
   );
