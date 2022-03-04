@@ -1,3 +1,4 @@
+import { Center, Heading } from 'native-base';
 import { useState } from 'react';
 import { Keyboard, TouchableWithoutFeedback } from 'react-native';
 import Header from '../components/Header';
@@ -26,7 +27,13 @@ export default function SearchScreen() {
       <MainLayout>
         <Header isShrink={shrink}>Search Repository</Header>
         <SearchBar onSearch={handleSearch} />
-        {showResult && <SearchResult keyword={keyword} />}
+        {showResult ? (
+          <SearchResult keyword={keyword} />
+        ) : (
+          <Center flex={1}>
+            <Heading color="gray.400">Find Your Favorite Repository!</Heading>
+          </Center>
+        )}
       </MainLayout>
     </TouchableWithoutFeedback>
   );

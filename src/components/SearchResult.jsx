@@ -6,6 +6,7 @@ import LoadingSkeleton from './LoadingSkeleton';
 import useSearch from '../hooks/useSearch';
 import PropTypes from 'prop-types';
 import useRepositoryStorage from '../hooks/useRepositoryStorage';
+import { NUMBER_OF_PAGES } from '../constants/repository';
 
 const SearchResult = ({ keyword }) => {
   const [page, setPage] = useState(1);
@@ -29,11 +30,7 @@ const SearchResult = ({ keyword }) => {
   if (searchResult.length === 0) {
     return (
       <Center flex={1}>
-        <Heading color="gray.400">
-          {keyword
-            ? 'No Matching Repository!'
-            : 'Find Your Favorite Repository!'}
-        </Heading>
+        <Heading color="gray.400">No Matching Repository!</Heading>
       </Center>
     );
   }
@@ -42,7 +39,7 @@ const SearchResult = ({ keyword }) => {
     <PaginationList
       data={searchResult}
       currentPage={page}
-      numberOfPages={5}
+      numberOfPages={NUMBER_OF_PAGES}
       onChange={setPage}
       renderItem={(repo) => (
         <RepoCard
