@@ -2,10 +2,9 @@ import useSWR from 'swr';
 import api from '../api';
 import { PER_PAGE } from '../constants/repository';
 
-const fetchSearchResult = async ([url, keyword, pageNum]) => {
+const fetchSearchResult = async (url, keyword, pageNum) => {
   try {
     const res = await api.get(url, {
-      headers: { Accept: 'application/vnd.github.v3+json' },
       params: {
         q: keyword,
         per_page: PER_PAGE,
@@ -24,7 +23,7 @@ function useSearch(keyword, pageNum = 1) {
     ['search/repositories', keyword, pageNum],
     fetchSearchResult,
   );
-  return [data, error];
+  return { searchResult: data, isLoading: !data && !error, isError: error };
 }
 
 export default useSearch;
