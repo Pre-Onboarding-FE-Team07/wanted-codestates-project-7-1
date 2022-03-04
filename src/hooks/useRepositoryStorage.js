@@ -19,9 +19,7 @@ const getStoredValue = async (key) => {
 function useRepositoryStorage() {
   const { data, mutate } = useSWR(ASYNC_STORAGE_KEY, getStoredValue);
 
-  const filteringArray = (id) => {
-    return data.filter((item) => item.id !== id);
-  };
+  const filteringArray = (id) => data.filter((item) => item.id !== id);
 
   const addRepo = async (repo) => {
     if (!repo || !repo.full_name) {
@@ -54,11 +52,11 @@ function useRepositoryStorage() {
 
   return {
     repos: data,
-    addRepo: (repos) => {
+    addRepo(repos) {
       addRepo(repos);
       return mutate();
     },
-    removeRepo: (repos) => {
+    removeRepo(repos) {
       removeRepo(repos);
       return mutate();
     },
