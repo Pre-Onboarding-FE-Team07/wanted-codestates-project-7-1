@@ -45,9 +45,6 @@ export default function SearchScreen() {
         <Header isShrink={shrink}>Search Repository</Header>
         <SearchBar onSearch={handleSearch} />
         {loading ? (
-          // <Center flex={1}>
-          //   <Heading color="gray.400">Loading...</Heading>
-          // </Center>
           <LoadingSkeleton />
         ) : list.length ? (
           <PaginationList
@@ -55,8 +52,12 @@ export default function SearchScreen() {
             currentPage={page}
             numberOfPages={5}
             onChange={setPage}
-            renderItem={({ full_name, description }) => (
-              <RepoCard name={full_name} desc={description} />
+            renderItem={({ full_name, description, open_issues_count }) => (
+              <RepoCard
+                name={full_name}
+                desc={description}
+                numberOfIssues={open_issues_count}
+              />
             )}
           />
         ) : (

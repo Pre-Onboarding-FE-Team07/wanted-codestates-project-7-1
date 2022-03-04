@@ -1,24 +1,19 @@
-import { Box, HStack, Icon, Text } from 'native-base';
+import { Box, Text } from 'native-base';
 import PropTypes from 'prop-types';
 import { TouchableOpacity } from 'react-native';
-import Octicons from 'react-native-vector-icons/Octicons';
+import RepoHeader from './RepoHeader';
 
-export default function RepoCard({ name, desc, subscribe }) {
+export default function RepoCard({
+  name,
+  desc,
+  opPress = () => {},
+  numberOfIssues,
+}) {
   return (
-    <Box borderRadius="md" bg="white" shadow={3} my="1.5" mx="1">
-      <TouchableOpacity onPress={subscribe}>
+    <Box borderRadius="md" bg="white" shadow={3} my="1.5" mx="1" px={1}>
+      <TouchableOpacity onPress={opPress}>
         <Box mt="2" mb="3" mx="2" overflow="hidden">
-          <HStack alignItems="center" space={0.3}>
-            <Icon as={Octicons} name="repo" size="4" mt="1" />
-            <Text
-              color="dark.200"
-              fontWeight="bold"
-              fontSize="lg"
-              numberOfLines={1}
-            >
-              {name}
-            </Text>
-          </HStack>
+          <RepoHeader fullName={name} numberOfIssues={numberOfIssues} />
           <Text color="dark.300" numberOfLines={2} fontSize="xs">
             {desc}
           </Text>
@@ -31,5 +26,6 @@ export default function RepoCard({ name, desc, subscribe }) {
 RepoCard.propTypes = {
   name: PropTypes.string,
   desc: PropTypes.string,
-  subscribe: PropTypes.func,
+  numberOfIssues: PropTypes.number,
+  opPress: PropTypes.func,
 };
