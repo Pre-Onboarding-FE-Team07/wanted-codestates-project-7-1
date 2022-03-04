@@ -9,19 +9,11 @@ export default function Header({ children, isShrink = false }) {
   const boxHeight = useRef(new Animated.Value(150)).current;
 
   useEffect(() => {
-    if (isShrink) {
-      Animated.timing(boxHeight, {
-        toValue: 50,
-        duration: 100,
-        useNativeDriver: false,
-      }).start();
-    } else {
-      Animated.timing(boxHeight, {
-        toValue: 150,
-        duration: 100,
-        useNativeDriver: false,
-      }).start();
-    }
+    Animated.timing(boxHeight, {
+      toValue: isShrink ? 50 : 150,
+      duration: 100,
+      useNativeDriver: false,
+    }).start();
   }, [isShrink, boxHeight]);
 
   return (
