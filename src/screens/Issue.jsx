@@ -1,21 +1,24 @@
-import { VStack } from 'native-base';
-import { useEffect, useState } from 'react';
-import { Text } from 'react-native';
 import Header from '../components/Header';
-import useIssues from '../hooks/useIssues';
+import IssueCard from '../components/IssueCard';
+import PaginationList from '../components/PaginationList';
+import fakeData from '../fakeData/issue.json';
+import MainLayout from '../layouts/MainLayout';
 
 export default function IssueScreen() {
-  const [getIssues, getTime] = useIssues();
-  const [issueList, setIssueList] = useState([]);
-
-  useEffect(() => {
-    getIssues('mui', 'material-ui').then(setIssueList);
-  }, [getIssues]);
-
   return (
-    <VStack flex={1}>
+    <MainLayout>
       <Header>Explore Issues</Header>
-      <Text>Issue</Text>
-    </VStack>
+      <PaginationList
+        data={fakeData}
+        renderItem={({ title, html_url, created_at }) => (
+          <IssueCard
+            title={title}
+            url={html_url}
+            createdAt={created_at}
+            repo="test/repo"
+          />
+        )}
+      />
+    </MainLayout>
   );
 }
