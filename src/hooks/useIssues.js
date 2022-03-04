@@ -1,27 +1,35 @@
-import axios from 'axios';
+import useSWR from 'swr';
+import api from '../api';
+import { PER_PAGE } from '../constants/repository';
+
+const fetchIssues = async (url) => {
+  try {
+    const res = await api.get(url, {
+      headers: { Accept: 'application/vnd.github.v3+json' },
+      params: {
+        per_page: PER_PAGE,
+      },
+    });
+    console.log(res.data);
+    return res.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
 
 function useIssues() {
-  const getIssues = async (owner, repo) => {
-    try {
-      const res = await axios.get(
-        `https://api.github.com/repos/${owner}/${repo}/issues`,
-        {
-          headers: { Accept: 'application/vnd.github.v3+json' },
-          params: {
-            per_page: 10,
-          },
-        },
-      );
-      console.log(res.data);
-      return res.data;
-    } catch (e) {
-      console.log(e);
-    }
+  const useIssuesSWR = (owner, repo) => {
+    const { data, error } = useSWR(
+      `repos/${owner}/${repo}/issues`,
+      fetchIssues,
+    );
+
+    return { issues: data, isLoading: !error && !data, isError: error };
   };
 
-  const getTime = (createdAt) => {
+  const useIssueTime = (createdDate) => {
     const now = new Date();
-    const created = new Date(createdAt);
+    const created = new Date(createdDate);
     const timeMinutes = Math.floor(
       (now.getTime() - created.getTime()) / 1000 / 60,
     );
@@ -42,8 +50,7 @@ function useIssues() {
     }
     return `${Math.floor(timeDays / 365)}년 전`;
   };
-
-  return [getIssues, getTime];
+  return [useIssuesSWR, useIssueTime];
 }
 
 export default useIssues;

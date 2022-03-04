@@ -1,32 +1,46 @@
-import { useState, useCallback } from 'react';
-import useAsyncStorage from '../hooks/useAsyncStorage';
-import notifyMessage from '../utils/notifyMessage';
+import useSWR from 'swr';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ASYNC_STORAGE_KEY, STORED_DATA_MAX } from '../constants/repository';
+import notifyMessage from '../utils/notifyMessage';
 
-export default function useRepositoryStorage(initialValue) {
-  const [storedValue, setStoredValue] = useAsyncStorage(
-    ASYNC_STORAGE_KEY,
-    initialValue,
-  );
-  const [storedRepo, setStoredRepo] = useState(() => {
-    return storedValue || initialValue;
-  });
+const getStoredValue = async (key) => {
+  try {
+    const item = await AsyncStorage.getItem(key);
+    return item ? JSON.parse(item) : null;
+  } catch (e) {
+    console.log(e);
+  }
+};
 
-  const setRepo = useCallback(
-    async (value) => {
-      try {
-        if (value && value.length > STORED_DATA_MAX) {
-          notifyMessage('저장소는 최대 4개까지 등록할 수 있습니다.');
-          return false;
-        }
-        setStoredValue(value);
-        setStoredRepo(value);
-        notifyMessage('성공적으로 등록되었습니다.');
-      } catch (e) {
-        console.log(e);
-      }
+function useRepositoryStorage() {
+  const { data, mutate } = useSWR(ASYNC_STORAGE_KEY, getStoredValue);
+
+  const setRepos = async (repos) => {
+    if (!repos || !Array.isArray(repos)) {
+      return;
+    }
+    if (repos.length > STORED_DATA_MAX) {
+      notifyMessage('저장소는 최대 4개까지 등록할 수 있습니다.');
+      return;
+    }
+    if (repos.length === 0) {
+      AsyncStorage.removeItem(ASYNC_STORAGE_KEY);
+      return;
+    }
+    try {
+      await AsyncStorage.setItem(ASYNC_STORAGE_KEY, JSON.stringify(repos));
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  return {
+    repos: data,
+    setRepos: (repos) => {
+      setRepos(repos);
+      return mutate();
     },
-    [setStoredValue],
-  );
-  return [storedRepo, setRepo];
+  };
 }
+
+export default useRepositoryStorage;
