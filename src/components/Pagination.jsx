@@ -13,7 +13,7 @@ const Pagination = ({
   const page = Math.round(data.length / dataLimit);
   const [currentPage, setCurrentPage] = useState(1);
   const goToNextPage = () => {
-    if (currentPage === page) {
+    if (currentPage >= page) {
       return;
     }
     setCurrentPage((page) => page + 1);
