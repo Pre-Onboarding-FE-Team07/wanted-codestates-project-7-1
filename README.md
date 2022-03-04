@@ -1,29 +1,35 @@
 # Github Issue Tracker
 
-Github 저장소를 등록하고, 등록한 저장소의 이슈를 모아 보여주는 서비스입니다.
+Github 저장소를 등록하고, 등록한 저장소의 이슈를 모아 보여주는 서비스입니다.  
 
-## 실행 방법
+## 사용한 기술 스택
+- React Native, React-Native-CLI, SWR
 
-1. 의존성 패키지를 설치합니다.
+## 프로젝트 실행 방법
 
-   ```sh
-   $ npm install
-   ```
+- 배포 사이트 : 구글 플레이스토어에 배포 진행 중입니다. 
 
-2. [Metro 번들러](https://facebook.github.io/metro/docs/concepts/)를 실행합니다.
+- 로컬 
+   1. 의존성 패키지를 설치합니다.
 
-   ```sh
-   $ npm run start
-   ```
+      ```sh
+      $ npm install
+      ```
 
-3. 터미널을 하나 더 열고 [Android Emulator](https://developer.android.com/studio/run/managing-avds.html)를 실행합니다.
+   2. [Metro 번들러](https://facebook.github.io/metro/docs/concepts/)를 실행합니다.
 
-   ```sh
-   $ npm run android
-   ```
-   > `npm run android`에서 `INSTALL_FAILED_INSUFFICIENT_STORAGE` 오류가 발생하는 경우<br>
-   > 에뮬레이터에서 앱 삭제 후 다시 빌드합니다. [참고](https://rateye.tistory.com/1414)
-   
+      ```sh
+      $ npm run start
+      ```
+
+   3. 터미널을 하나 더 열고 [Android Emulator](https://developer.android.com/studio/run/managing-avds.html)를 실행합니다.
+
+      ```sh
+      $ npm run android
+      ```
+      > `npm run android`에서 `INSTALL_FAILED_INSUFFICIENT_STORAGE` 오류가 발생하는 경우<br>
+      > 에뮬레이터에서 앱 삭제 후 다시 빌드합니다. [참고](https://rateye.tistory.com/1414)
+
    
 ## 프로젝트 구조
 
