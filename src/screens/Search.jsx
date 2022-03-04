@@ -1,20 +1,19 @@
 import { useState } from 'react';
 import { Keyboard, TouchableWithoutFeedback } from 'react-native';
-import { useToast } from 'native-base';
 import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
 import SearchResult from '../components/SearchResult';
 import MainLayout from '../layouts/MainLayout';
+import notifyMessage from '../utils/notifyMessage';
 
 export default function SearchScreen() {
   const [showResult, setShowResult] = useState(false);
   const [shrink, setShrink] = useState(false);
   const [keyword, setKeyword] = useState('');
-  const toast = useToast();
 
   const handleSearch = async (value) => {
     if (!value) {
-      toast.show({ description: '검색어를 입력해 주세요' });
+      notifyMessage('검색어를 입력해주세요.');
       return;
     }
     setShrink(true);
