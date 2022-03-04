@@ -5,10 +5,12 @@ import RepoCard from './RepoCard';
 import LoadingSkeleton from './LoadingSkeleton';
 import useSearch from '../hooks/useSearch';
 import PropTypes from 'prop-types';
+import useRepositoryStorage from '../hooks/useRepositoryStorage';
 
 const SearchResult = ({ keyword }) => {
   const [page, setPage] = useState(1);
   const { searchResult, isLoading, isError } = useSearch(keyword, page);
+  const { addRepo } = useRepositoryStorage();
 
   if (isError) {
     return (
@@ -42,11 +44,14 @@ const SearchResult = ({ keyword }) => {
       currentPage={page}
       numberOfPages={5}
       onChange={setPage}
-      renderItem={({ full_name, description, open_issues_count }) => (
+      renderItem={(repo) => (
         <RepoCard
-          name={full_name}
-          desc={description}
-          numberOfIssues={open_issues_count}
+          name={repo.full_name}
+          desc={repo.description}
+          numberOfIssues={repo.open_issues_count}
+          onPress={() => {
+            addRepo(repo);
+          }}
         />
       )}
     />
