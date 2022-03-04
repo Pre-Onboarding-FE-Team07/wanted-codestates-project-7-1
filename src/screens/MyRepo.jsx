@@ -10,17 +10,15 @@ export default function MyRepoScreen() {
     <MainLayout>
       <Header>My Repos</Header>
       <ScrollView my={2}>
-        {repos
-          .slice(0, 4)
-          .map(({ id, full_name, description, open_issues_count }) => (
-            <RepoCard
-              key={id}
-              name={full_name}
-              desc={description}
-              numberOfIssues={open_issues_count}
-              onPress={() => {}}
-            />
-          ))}
+        {repos?.map(({ id, full_name, description, open_issues_count }) => (
+          <RepoCard
+            key={id}
+            name={full_name}
+            desc={description}
+            numberOfIssues={open_issues_count}
+            onPress={() => {}}
+          />
+        ))}
       </ScrollView>
     </MainLayout>
   );
