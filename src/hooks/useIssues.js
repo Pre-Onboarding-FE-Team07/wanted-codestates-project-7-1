@@ -1,30 +1,42 @@
 import useSWR from 'swr';
 import api from '../api';
-import { PER_PAGE } from '../constants/repository';
+import useRepositoryStorage from './useRepositoryStorage';
 
-const fetchIssues = async (url) => {
-  try {
-    const res = await api.get(url, {
-      headers: { Accept: 'application/vnd.github.v3+json' },
-      params: {
-        per_page: PER_PAGE,
-      },
-    });
-    console.log(res.data);
-    return res.data;
-  } catch (e) {
-    console.log(e);
+const extractIssueData = ({
+  id,
+  title,
+  html_url,
+  created_at,
+  repository_url,
+}) => ({
+  id,
+  title,
+  html_url,
+  created_at,
+  full_name: repository_url.split('/').slice(-2).join('/'),
+});
+
+const fetchIssues = async (repos) => {
+  if (!repos) {
+    return null;
   }
+  const promises = repos.map((repo) =>
+    api.get(`repos/${repo.full_name}/issues`).then((res) => res.data),
+  );
+  const responses = await Promise.all(promises);
+  const list = responses.flat().map(extractIssueData);
+  list.sort((a, b) => {
+    return new Date(b.created_at) - new Date(a.created_at);
+  });
+  return list;
 };
 
 function useIssues() {
-  const useIssuesSWR = (owner, repo) => {
-    const { data, error } = useSWR(
-      `repos/${owner}/${repo}/issues`,
-      fetchIssues,
-    );
+  const { repos } = useRepositoryStorage();
+  const useIssuesSWR = () => {
+    const { data, error } = useSWR([repos], fetchIssues);
 
-    return { issues: data, isLoading: !error && !data, isError: error };
+    return { issues: data, isLoading: !data && !error, isError: error };
   };
 
   const useIssueTime = (createdDate) => {
