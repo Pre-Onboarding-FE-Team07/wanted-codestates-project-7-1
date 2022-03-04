@@ -38,7 +38,13 @@ const Pagination = ({
   return (
     <>
       <Flex direction="row" mb={5}>
-        <Button size="9" bg="primary.300" ml={2.5} mr={2.5}>
+        <Button
+          size="9"
+          bg="primary.300"
+          ml={2.5}
+          mr={2.5}
+          onPress={goToPreviousPage}
+        >
           Frev
         </Button>
         <FlatList
