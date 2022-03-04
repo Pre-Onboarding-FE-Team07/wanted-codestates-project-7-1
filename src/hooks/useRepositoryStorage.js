@@ -13,9 +13,7 @@ const getStoredValue = async (key) => {
 };
 
 function useRepositoryStorage() {
-  const { data, mutate } = useSWR(ASYNC_STORAGE_KEY, () => {
-    getStoredValue(ASYNC_STORAGE_KEY);
-  });
+  const { data, mutate } = useSWR(ASYNC_STORAGE_KEY, getStoredValue);
 
   const setRepos = async (repos) => {
     if (!repos || !Array.isArray(repos)) {
