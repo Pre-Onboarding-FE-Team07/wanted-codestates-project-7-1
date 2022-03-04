@@ -14,6 +14,7 @@ const fetchSearchResult = async (url, keyword, pageNum) => {
     return res?.data?.items;
   } catch (e) {
     console.log(e);
+    return null;
   }
 };
 
