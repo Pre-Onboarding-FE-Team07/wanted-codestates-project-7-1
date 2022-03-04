@@ -3,6 +3,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ASYNC_STORAGE_KEY, STORED_DATA_MAX } from '../constants/repository';
 import notifyMessage from '../utils/notifyMessage';
 
+const extractMainData = ({ full_name, description, open_issues_count }) => {
+  return { full_name, description, open_issues_count };
+};
+
 const getStoredValue = async (key) => {
   try {
     const item = await AsyncStorage.getItem(key);
@@ -14,21 +18,21 @@ const getStoredValue = async (key) => {
 
 function useRepositoryStorage() {
   const { data, mutate } = useSWR(ASYNC_STORAGE_KEY, getStoredValue);
-
-  const setRepos = async (repos) => {
-    if (!repos || !Array.isArray(repos)) {
+  const setRepos = async (repo) => {
+    if (!repo || !repo.full_name) {
       return;
     }
-    if (repos.length > STORED_DATA_MAX) {
+    if (data?.length >= STORED_DATA_MAX) {
       notifyMessage('저장소는 최대 4개까지 등록할 수 있습니다.');
       return;
     }
-    if (repos.length === 0) {
-      AsyncStorage.removeItem(ASYNC_STORAGE_KEY);
-      return;
-    }
     try {
-      await AsyncStorage.setItem(ASYNC_STORAGE_KEY, JSON.stringify(repos));
+      const newRepoData = extractMainData(repo);
+      const newStoredRepos = data ? [...data, newRepoData] : [newRepoData];
+      await AsyncStorage.setItem(
+        ASYNC_STORAGE_KEY,
+        JSON.stringify(newStoredRepos),
+      );
     } catch (e) {
       console.log(e);
     }
