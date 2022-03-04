@@ -62,6 +62,7 @@ function useIssues() {
     }
     return `${Math.floor(timeDays / 365)}년 전`;
   };
+
   return [useIssuesSWR, useIssueTime];
 }
 
