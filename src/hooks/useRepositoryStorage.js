@@ -3,8 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ASYNC_STORAGE_KEY, STORED_DATA_MAX } from '../constants/repository';
 import notifyMessage from '../utils/notifyMessage';
 
-const extractMainData = ({ full_name, description, open_issues_count }) => {
-  return { full_name, description, open_issues_count };
+const extractRepoData = ({ id, full_name, description, open_issues_count }) => {
+  return { id, full_name, description, open_issues_count };
 };
 
 const getStoredValue = async (key) => {
@@ -28,7 +28,7 @@ function useRepositoryStorage() {
       return;
     }
     try {
-      const newRepoData = extractMainData(repo);
+      const newRepoData = extractRepoData(repo);
       const newStoredRepos = data ? [...data, newRepoData] : [newRepoData];
       await AsyncStorage.setItem(
         ASYNC_STORAGE_KEY,
