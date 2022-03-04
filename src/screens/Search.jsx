@@ -11,7 +11,7 @@ export default function SearchScreen() {
   const [shrink, setShrink] = useState(false);
   const [keyword, setKeyword] = useState('');
 
-  const handleSearch = async (value) => {
+  const handleSearch = (value) => {
     if (!value) {
       notifyMessage('검색어를 입력해주세요.');
       return;
