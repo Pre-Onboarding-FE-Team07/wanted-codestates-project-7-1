@@ -7,7 +7,7 @@ function useIssues() {
   // repo 결과에 따라 issue 합친 데이터
   const useIssuesData = () => {
     try {
-      let issueAllData = [];
+      const issueAllData = [];
 
       repos?.forEach(async (element) => {
         let fullName = element.full_name;
