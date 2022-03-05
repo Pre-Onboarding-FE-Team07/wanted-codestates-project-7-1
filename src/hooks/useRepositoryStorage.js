@@ -32,7 +32,7 @@ function useRepositoryStorage() {
     }
     try {
       const newRepoData = extractRepoData(repo);
-      if (isExist(data, newRepoData.id)) {
+      if (data && isExist(data, newRepoData.id)) {
         notifyMessage('이미 등록된 저장소입니다.');
         return;
       }
