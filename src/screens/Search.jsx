@@ -6,6 +6,7 @@ import SearchBar from '../components/SearchBar';
 import SearchResult from '../components/SearchResult';
 import MainLayout from '../layouts/MainLayout';
 import notifyMessage from '../utils/notifyMessage';
+import PropTypes from 'prop-types';
 
 export default function SearchScreen() {
   const [showResult, setShowResult] = useState(false);
@@ -38,3 +39,7 @@ export default function SearchScreen() {
     </TouchableWithoutFeedback>
   );
 }
+
+SearchScreen.propTypes = {
+  onPress: PropTypes.func,
+};
