@@ -7,6 +7,7 @@ const extractRepoData = ({ id, full_name, description, open_issues_count }) => {
   return { id, full_name, description, open_issues_count };
 };
 
+const isExist = (array, id) => array.some((item) => item.id === id);
 const getStoredValue = async (key) => {
   try {
     const item = await AsyncStorage.getItem(key);
@@ -31,6 +32,10 @@ function useRepositoryStorage() {
     }
     try {
       const newRepoData = extractRepoData(repo);
+      if (data && isExist(data, newRepoData.id)) {
+        notifyMessage('이미 등록된 저장소입니다.');
+        return;
+      }
       const newStoredRepos = data ? [...data, newRepoData] : [newRepoData];
       notifyMessage('저장되었습니다.');
       await AsyncStorage.setItem(
