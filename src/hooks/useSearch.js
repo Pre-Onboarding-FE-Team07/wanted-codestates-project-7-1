@@ -11,10 +11,10 @@ const fetchSearchResult = async (url, keyword, pageNum) => {
         page: pageNum,
       },
     });
-    return res?.data?.items;
+    return { data: res?.data?.items, totalCount: res?.data?.total_count };
   } catch (e) {
     console.log(e);
-    return null;
+    throw new Error(e);
   }
 };
 
@@ -23,7 +23,12 @@ function useSearch(keyword, pageNum = 1) {
     ['search/repositories', keyword, pageNum],
     fetchSearchResult,
   );
-  return { searchResult: data, isLoading: !data && !error, isError: error };
+  return {
+    searchResult: data?.data,
+    totalCount: data?.totalCount,
+    isLoading: !data && !error,
+    isError: error,
+  };
 }
 
 export default useSearch;

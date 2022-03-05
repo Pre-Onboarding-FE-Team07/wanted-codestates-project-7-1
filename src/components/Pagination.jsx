@@ -1,7 +1,7 @@
-import { Box, Button, HStack, Icon } from 'native-base';
-import PropTypes from 'prop-types';
-import { useRef } from 'react';
+import { Box, Button, HStack, Icon, Text } from 'native-base';
+import PropTypes, { number } from 'prop-types';
 import Octicons from 'react-native-vector-icons/Octicons';
+import { TouchableOpacity } from 'react-native';
 
 function ChevronButton({ type, disabled, onPress }) {
   return (
@@ -28,13 +28,21 @@ ChevronButton.propTypes = {
   type: PropTypes.oneOf(['left', 'right']),
 };
 
+const getPageLength = ({ currentPage, pageLimit, numberOfPages }) => {
+  const pageGroupNum = Math.ceil(currentPage / pageLimit);
+  const lastPageNum = pageGroupNum * pageLimit;
+  return numberOfPages > lastPageNum ? pageLimit : numberOfPages % pageLimit;
+};
+
 export default function Pagination({
   numberOfPages,
   currentPage,
+  pageLimit,
   onChange = () => undefined,
 }) {
-  const pages = useRef([...Array(numberOfPages + 1).keys()].slice(1));
-
+  const startpageNo =
+    parseInt((currentPage - 1) / pageLimit, 10) * pageLimit + 1;
+  const pageLength = getPageLength({ currentPage, pageLimit, numberOfPages });
   return (
     <HStack
       alignItems="center"
@@ -48,21 +56,29 @@ export default function Pagination({
         disabled={currentPage <= 1}
         onPress={() => onChange(currentPage - 1)}
       />
-      <Box>
-        <HStack>
-          {pages.current.map((pageNo) => (
-            <Button
-              key={pageNo}
-              bg="transparent"
-              _pressed={{ backgroundColor: 'transparent' }}
-              onPress={() => onChange(pageNo)}
-            >
-              <Octicons
-                size={15}
-                name={currentPage === pageNo ? 'square-fill' : 'square'}
-              />
-            </Button>
-          ))}
+      <Box flex={1}>
+        <HStack justifyContent="center">
+          {Array(pageLength)
+            .fill()
+            .map((_, index) => (
+              <TouchableOpacity
+                key={index}
+                bg="transparent"
+                _pressed={{ backgroundColor: 'transparent' }}
+                onPress={() => onChange(index + startpageNo)}
+                style={{ width: `${100 / pageLimit}%` }}
+              >
+                <Octicons
+                  size={15}
+                  style={{ textAlign: 'center' }}
+                  name={
+                    (currentPage - 1) % pageLimit === index
+                      ? 'square-fill'
+                      : 'square'
+                  }
+                />
+              </TouchableOpacity>
+            ))}
         </HStack>
       </Box>
 
@@ -78,5 +94,6 @@ export default function Pagination({
 Pagination.propTypes = {
   currentPage: PropTypes.number,
   numberOfPages: PropTypes.number,
+  pageLimit: PropTypes.number,
   onChange: PropTypes.func,
 };
