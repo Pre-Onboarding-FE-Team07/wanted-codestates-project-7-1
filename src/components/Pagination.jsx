@@ -1,5 +1,5 @@
 import { Box, Button, HStack, Icon, Text } from 'native-base';
-import PropTypes, { number } from 'prop-types';
+import PropTypes from 'prop-types';
 import Octicons from 'react-native-vector-icons/Octicons';
 import { TouchableOpacity } from 'react-native';
 
