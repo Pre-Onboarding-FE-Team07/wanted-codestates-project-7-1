@@ -46,7 +46,7 @@ Github 저장소를 등록하고, 등록한 저장소의 이슈를 모아 보여
 
 | 이름                                       | 직책 | 역할                                             |
 | ------------------------------------------ | ---- | ------------------------------------------------ |
-| [⚡️박진용](https://github.com/jinyongp)   | 팀장 | 개발 환경 구축 및 전체 UI 구현                                |
+| [⚡️박진용](https://github.com/jinyongp)   | 팀장 | 개발 환경 구축 및 전체 UI 구현 및 배포                            |
 | [✨김정훈](https://github.com/jeonghun10)  | 팀원 | 페이지 네이션 구현 |
 | [🎨문선경](https://github.com/dev-seomoon) | 팀원 | 검색 및 출력 기능 구현 및 SWR 적용            |
 | [🚀심채윤](https://github.com/Lela12)      | 팀원 | 등록된 저장소 삭제 기능 구현               |
@@ -70,7 +70,26 @@ Github 저장소를 등록하고, 등록한 저장소의 이슈를 모아 보여
 
 #### 구현한 방법
 
+- React Native CLI를 이용해 프로젝트를 생성 및 초기화했습니다.
+  
+  - ESLint와 Prettier를 설정하고, `lint-staged`를 통해 커밋 과정에서 컨벤션에 맞게 고치도록 자동화했습니다.
+  - RN에서 `jsx` 확장자를 읽을 수 있도록 설정하기 위해 babel과 metro의 설정을 변경했습니다.
+  - react-navigation을 이용해 bottom tabs를 구성했습니다.
+  
+- UI 개발을 위해 [NativeBase](https://nativebase.io/)를 활용했습니다.
+
+  - 다양한 Layout과 컴포넌트를 지원하여 이를 활용하여 빠르게 개발했습니다.
+  - prop로 스타일을 지정하여 [Utility First](https://docs.nativebase.io/utility-first) 방식으로 개발할 수 있다는 점이 편리했습니다.
+  - Skeleton 컴포넌트를 이용해 데이터가 로딩 중일 때 사용자가 이를 알 수 있도록 했습니다.
+
+- `Animated`를 이용해 검색 완료 시 Header가 수축될 수 있도록 하여 동적인 UI를 작성했습니다.
+  
+- 팀원이 [데이터 fetch 과정에서 비동기 이슈](#3-비동기-처리---promise-all)로 문제를 겪고 있을 때, 원인을 발견하고 해결 방법을 제시했습니다.
+- Google Play Store에 배포했습니다. 
+
 #### 어려웠던 점 (에러 핸들링)
+
+- React Native 프로젝트를 할 때 여태까지 Expo나 [CRNA](https://github.com/expo/create-react-native-app)를 이용해왔었는데 React Native CLI로 프로젝트를 생성하려니 부딪히는 문제도 많고 패키지를 하나 설치하려고 해도 제대로 실행되지 않아 어려움을 많이 겪었습니다. NativeBase에서도 icon 라이브러리를 지원해서 이를 이용하려고 했지만, 제대로 동작하지 않아 [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons) 라이브러리를 사용했습니다.
 
 
 ## 김정훈
