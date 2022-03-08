@@ -229,9 +229,12 @@ Github 저장소를 등록하고, 등록한 저장소의 이슈를 모아 보여
 ## 예효은
 
 #### 구현한 방법
+asyncStorage를 이용해 저장소 정보를 등록하는 기능을 구현했습니다. asyncstorage를 사용하는 함수들은 최종적으로 custom hook으로 만들었고 개수 제한이나 중복 처리 등도 내부에서 처리하여 알림을 띄우도록 처리했습니다.
 
 #### 어려웠던 점 (에러 핸들링)
+asyncStorage는 처음에 일반 함수로 모듈화하여 구현했는데, 팀원분께서 훅으로 작성하는 것이 좋지 않겠냐는 의견을 주셨습니다. custom hook으로 구현해야하는 필요성을 알아보았더니 일반 함수 내에서는 useState, useEffect 등의 리액트 훅을 사용할 수 없기때문에 확장성을 고려해였을 때 custom hook으로 만드는 것이 좋다는 말이 가장 와닿았고 custom hook으로 다시 구현하게 되었습니다. 훅은 처음에 asyncStorage를 저장소 처리 외의 부분에서도 다룰 가능성을 고려하여 useAsyncStorage, 그리고 이 훅을 사용하는 useRepositoryStorage 훅 2가지로 구현했었는데 asyncStorage에 저장하는 것은 저장소 밖에 없기 때문에 다른 팀원분께서 이를 하나로 통합해주셨습니다.
 
+디버깅 과정에서 `Failed to build iOS project. We ran "xcodebuild" command but it exited with error code 65. To debug build logs further, consider building your app with Xcode.app, by opening GithubIssueTracker.xcworkspace.` 오류가 발생했었는데 build 관련 파일의 내용이 엉킨 것으로 판단되어 `xcode`를 통해 `pods Resources`를 제거하고 새로 빌드하여 해결하였습니다.
 
 ## 이예지
 
