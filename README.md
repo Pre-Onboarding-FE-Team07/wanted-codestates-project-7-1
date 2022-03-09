@@ -239,11 +239,14 @@ Github 저장소를 등록하고, 등록한 저장소의 이슈를 모아 보여
     - [https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise/all](https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Promise/all)
 
 ## 심채윤
+- 등록된 저장소 삭제 기능 구현
+- Alert를 사용하여 confirm창 구현
 
 #### 구현한 방법
+My Repos 페이지에서 RepoCard 클릭시 onPress 콜백이 실행되고 Alert창이 보이게 되며 클릭한 RepoCard를 삭제합니다.
 
 #### 어려웠던 점 (에러 핸들링)
-
+삭제 기능을 구현하면서 삭제 `Alert`창을  `MyRepos`의 `RepoCard`에서 할 수 있게 하려고 하였는데, `MyRepos`, `Search Repository`의 `RepoCard`가 삭제되는 일이 발생 하였습니다. 이를 해결하기 위해 `MyRepo` 컴포넌트에 삭제 기능을 넣어, `MyRepo` 페이지에서만 삭제 기능이 가능 하도록 구현하였습니다.
 
 ## 예효은
 
