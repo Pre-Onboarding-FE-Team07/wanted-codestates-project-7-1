@@ -7,7 +7,7 @@ Github 저장소를 등록하고, 등록한 저장소의 이슈를 모아 보여
 
 ## 프로젝트 실행 방법
 
-- 배포 사이트 : 구글 플레이스토어에 배포 진행 중입니다. 
+- 배포 사이트: https://play.google.com/store/apps/details?id=com.githubissuetracker
 
 - 로컬 
    1. 의존성 패키지를 설치합니다.
