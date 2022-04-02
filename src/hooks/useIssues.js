@@ -17,18 +17,23 @@ const extractIssueData = ({
 });
 
 const fetchIssues = async (repos) => {
-  if (!repos) {
-    return null;
+  try {
+    if (!repos) {
+      return null;
+    }
+    const promises = repos.map((repo) =>
+      api.get(`repos/${repo.full_name}/issues`).then((res) => res.data),
+    );
+    const responses = await Promise.all(promises);
+    const list = responses.flat().map(extractIssueData);
+    list.sort((a, b) => {
+      return new Date(b.created_at) - new Date(a.created_at);
+    });
+    return list;
+  } catch (e) {
+    console.log(e);
+    throw new Error(e);
   }
-  const promises = repos.map((repo) =>
-    api.get(`repos/${repo.full_name}/issues`).then((res) => res.data),
-  );
-  const responses = await Promise.all(promises);
-  const list = responses.flat().map(extractIssueData);
-  list.sort((a, b) => {
-    return new Date(b.created_at) - new Date(a.created_at);
-  });
-  return list;
 };
 
 function useIssues() {
