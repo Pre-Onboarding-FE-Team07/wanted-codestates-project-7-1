@@ -3,13 +3,14 @@
 Github 저장소를 등록하고, 등록한 저장소의 이슈를 모아 보여주는 서비스입니다.  
 
 ## 사용한 기술 스택
-- React Native, React-Native-CLI, SWR
+- React Native, React-Native-CLI, NativeBase, React Navigation, SWR
 
 ## 프로젝트 실행 방법
 
-- 배포 사이트: https://play.google.com/store/apps/details?id=com.githubissuetracker
+- [배포 사이트](https://play.google.com/store/apps/details?id=com.githubissuetracker)
 
 - 로컬 
+
    1. 의존성 패키지를 설치합니다.
 
       ```sh
@@ -70,27 +71,35 @@ Github 저장소를 등록하고, 등록한 저장소의 이슈를 모아 보여
 
 #### 구현한 방법
 
-- React Native CLI를 이용해 프로젝트를 생성 및 초기화했습니다.
+- [React Native CLI](https://reactnative.dev/docs/environment-setup)를 이용해 프로젝트를 생성 및 초기화했습니다.
   
-  - ESLint와 Prettier를 설정하고, `lint-staged`를 통해 커밋 과정에서 컨벤션에 맞게 고치도록 자동화했습니다.
-  - RN에서 `jsx` 확장자를 읽을 수 있도록 설정하기 위해 babel과 metro의 설정을 변경했습니다.
-  - react-navigation을 이용해 bottom tabs를 구성했습니다.
+  - 일관된 코딩 컨벤션을 따르기 위해 ESLint와 Prettier를 설정했습니다. `lint-staged`를 통해 커밋 과정에서 컨벤션에 따라 수정되도록 자동화했습니다.
+
+  - React 17버전부터 [JSX 변환 방법을 변경](https://ko.reactjs.org/blog/2020/09/22/introducing-the-new-jsx-transform.html)하여 더 이상 `import React from 'react';` 작성을 할 필요가 없어졌습니다. 이를 반영하기 위해 `babel.config.js`에 `useTransformReactJSXExperimental: true`와 `runtime: 'automatic'` 설정을 추가했습니다. 또한, `eslintrc.js`에도 `extends`에 `'plugin:react/jsx-runtime'`를 추가하여 스타일 경고를 띄우지 않도록 수정했습니다.
+
+  - RN에서 `jsx` 확장자를 읽을 수 없는 문제가 있었습니다. 모든 컴포넌트에 대해 `jsx` 확장자를 사용하기 위해 [`metro.config.js`](metro.config.js)에 `resolver: { sourceExts: ['jsx', 'js', 'tsx', 'ts'] }` 설정을 추가하여 `jsx` 확장자를 읽을 수 있도록 하였습니다. `'tsx', 'ts'`는 해당 확장자를 가진 라이브러리가 있어 추가하였습니다.
+
+- [react-navigation](https://reactnavigation.org/)으로 Navigation을 구현했습니다. 앱이 BottomTab으로만 구성되어 있으므로 [App.jsx](src/App.jsx)에서 구현했습니다. 역할 별로 구분한 탭은 다음과 같습니다.
+
+  - `Search`: 저장소를 검색합니다. 구독하고자 하는 저장소를 추가할 수 있습니다.
+  - `Issue`: 추가한 저장소의 이슈 목록을 모아 보여줍니다.
+  - `MyRepo`: 추가한 저장소 목록을 확인합니다. 구독을 취소할 수 있습니다.
   
 - UI 개발을 위해 [NativeBase](https://nativebase.io/)를 활용했습니다.
 
   - 다양한 Layout과 컴포넌트를 지원하여 이를 활용하여 빠르게 개발했습니다.
-  - prop로 스타일을 지정하여 [Utility First](https://docs.nativebase.io/utility-first) 방식으로 개발할 수 있다는 점이 편리했습니다.
-  - Skeleton 컴포넌트를 이용해 데이터가 로딩 중일 때 사용자가 이를 알 수 있도록 했습니다.
+  - prop으로 스타일을 지정하여 [Utility First](https://docs.nativebase.io/utility-first) 방식으로 개발할 수 있다는 점이 편리했습니다.
+  - [Skeleton 컴포넌트](https://docs.nativebase.io/skeleton)를 이용해 데이터가 로딩 중일 때 사용자가 이를 인지할 수 있도록 했습니다.
 
-- `Animated`를 이용해 검색 완료 시 Header가 수축될 수 있도록 하여 동적인 UI를 작성했습니다.
+- 검색 완료 시 [Header](./src/components/Header.jsx)가 수축되도록 `Animated`를 이용하여 동적으로 구현했습니다. [`height` 속성의 경우, layout property](https://reactnative.dev/blog/2017/02/14/using-native-driver-for-animated#caveats)이므로 `useNativeDriver`를 `false`로 설정해야 했습니다.
   
 - 팀원이 [데이터 fetch 과정에서 비동기 이슈](#3-비동기-처리---promise-all)로 문제를 겪고 있을 때, 원인을 발견하고 해결 방법을 제시했습니다.
-- Google Play Store에 배포했습니다. 
+
+- 개발자 계정을 구매하여 Google Play Console을 통해 스토어에 배포했습니다.
 
 #### 어려웠던 점 (에러 핸들링)
 
-- React Native 프로젝트를 할 때 여태까지 Expo나 [CRNA](https://github.com/expo/create-react-native-app)를 이용해왔었는데 React Native CLI로 프로젝트를 생성하려니 부딪히는 문제도 많고 패키지를 하나 설치하려고 해도 제대로 실행되지 않아 어려움을 많이 겪었습니다. NativeBase에서도 icon 라이브러리를 지원해서 이를 이용하려고 했지만, 제대로 동작하지 않아 [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons) 라이브러리를 사용했습니다.
-
+- React Native 프로젝트를 할 때 여태까지 Expo나 [CRNA](https://github.com/expo/create-react-native-app)를 이용해왔었는데 React Native CLI로 처음부터 프로젝트를 생성하려니 부딪히는 문제도 많고 패키지를 하나 설치하려고 해도 제대로 실행되지 않아 많은 어려움을 겪었습니다. NativeBase에서도 icon 라이브러리를 지원해서 이를 이용하려고 했지만, 제대로 동작하지 않아 [react-native-vector-icons](https://github.com/oblador/react-native-vector-icons) 라이브러리를 사용했습니다.
 
 ## 김정훈
 
