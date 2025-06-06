@@ -6,7 +6,7 @@ import useIssues from '../hooks/useIssues';
 import { Center, Heading } from 'native-base';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 import { useState } from 'react';
-import { PER_PAGE, NUMBER_OF_PAGES } from '../constants/repository';
+import { PER_PAGE, ISSUE_PAGE_LENGTH } from '../constants/repository';
 
 export default function IssueScreen() {
   const [page, setPage] = useState(1);
@@ -22,18 +22,26 @@ export default function IssueScreen() {
       </Center>
     );
   }
-
   if (isLoading) {
     return <LoadingSkeleton />;
   }
 
+  if (issues.length === 0) {
+    return (
+      <Center flex={1}>
+        <Heading color="gray.400">{"There's no issue!"}</Heading>
+      </Center>
+    );
+  }
+  const maxPageNum = Math.ceil(issues.length / PER_PAGE);
   return (
     <MainLayout>
       <Header>Explore Issues</Header>
       <PaginationList
-        data={issues.slice(page - 1, page + (PER_PAGE - 1))}
+        data={issues.slice((page - 1) * PER_PAGE, PER_PAGE * page)}
         currentPage={page}
-        numberOfPages={NUMBER_OF_PAGES}
+        numberOfPages={maxPageNum}
+        pageLimit={ISSUE_PAGE_LENGTH}
         onChange={setPage}
         renderItem={(issue) => (
           <IssueCard

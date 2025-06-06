@@ -9,6 +9,7 @@ export default function PaginationList({
   onChange = () => undefined,
   data,
   renderItem,
+  pageLimit,
 }) {
   return (
     <FlatList
@@ -17,6 +18,7 @@ export default function PaginationList({
         <Pagination
           numberOfPages={numberOfPages}
           currentPage={currentPage}
+          pageLimit={pageLimit}
           onChange={onChange}
         />
       }
@@ -33,4 +35,5 @@ PaginationList.propTypes = {
   onChange: PropTypes.func,
   data: PropTypes.array.isRequired,
   renderItem: PropTypes.func.isRequired,
+  pageLimit: PropTypes.number,
 };

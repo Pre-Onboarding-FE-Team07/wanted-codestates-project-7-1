@@ -6,13 +6,15 @@ import LoadingSkeleton from './LoadingSkeleton';
 import useSearch from '../hooks/useSearch';
 import PropTypes from 'prop-types';
 import useRepositoryStorage from '../hooks/useRepositoryStorage';
-import { NUMBER_OF_PAGES } from '../constants/repository';
+import { NUMBER_OF_PAGES, PER_PAGE } from '../constants/repository';
 
 const SearchResult = ({ keyword }) => {
   const [page, setPage] = useState(1);
-  const { searchResult, isLoading, isError } = useSearch(keyword, page);
+  const { searchResult, totalCount, isLoading, isError } = useSearch(
+    keyword,
+    page,
+  );
   const { addRepo } = useRepositoryStorage();
-
   if (isError) {
     return (
       <Center flex={1}>
@@ -34,12 +36,14 @@ const SearchResult = ({ keyword }) => {
       </Center>
     );
   }
+  const maxPageNum = Math.ceil(totalCount / PER_PAGE);
 
   return (
     <PaginationList
       data={searchResult}
       currentPage={page}
-      numberOfPages={NUMBER_OF_PAGES}
+      numberOfPages={maxPageNum}
+      pageLimit={NUMBER_OF_PAGES}
       onChange={setPage}
       renderItem={(repo) => (
         <RepoCard
